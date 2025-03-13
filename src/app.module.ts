@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { Task } from './tasks/entities/task.entity';
 import { ConfigModule } from '@nestjs/config';
+import { EstadoModule } from './estado/estado.module';
+import { Estado } from './estado/entities/estado.entity';
 
 @Module({
   imports: [
@@ -19,13 +21,14 @@ import { ConfigModule } from '@nestjs/config';
       username: 'root',
       password: '70976074',
       database: 'taskdb',
-      entities: [Task, User], 
+      entities: [Task, User,Estado], 
       autoLoadEntities: true,
       synchronize: true,
     }),
     tasksModule,
     AuthModule,
     UsersModule,
+    EstadoModule,
     
   
     ],

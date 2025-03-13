@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsDate, IsInt, IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
 import { Type } from 'class-transformer';
 export class CreateTaskDto{
 
@@ -17,9 +17,9 @@ export class CreateTaskDto{
     @IsOptional()
     user?:string;
 
-    @IsBoolean()
+    @IsNumber()
     @IsOptional()
-    estado?:boolean;
+    estadoId?: number = 1;
 
 
 }

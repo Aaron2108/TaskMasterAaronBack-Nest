@@ -1,6 +1,7 @@
 import { Delete } from '@nestjs/common';
 import { User } from '../../users/entities/user.entity';
 import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Estado } from 'src/estado/entities/estado.entity';
 
 @Entity()
 export class Task{
@@ -18,10 +19,6 @@ export class Task{
     @Column({ type: 'timestamp' })
     fecha_vencimiento: Date;
 
-    @Column({ type: 'tinyint', default: 0 })
-    estado: boolean;
-
-
     @DeleteDateColumn()
     DeletedAt: Date;
 
@@ -38,4 +35,12 @@ export class Task{
 
     @Column()
     userEmail: string;
+
+     /** Relación con Estado (almacena id del estado) */
+    @ManyToOne(() => Estado)
+    @JoinColumn({ name: 'estadoId', referencedColumnName: 'id' })
+    estado: Estado;
+
+    @Column({default: 1})
+    estadoId: number;
 }

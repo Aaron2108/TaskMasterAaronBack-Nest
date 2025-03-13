@@ -7,6 +7,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { User } from '../users/entities/user.entity';
 import { UserActiveInterface } from '../common/interface/user-active.interface';
 import { Role } from 'src/common/enums/rol..enum';
+import { Estado } from 'src/estado/entities/estado.entity';
 
 @Injectable()
 export class TasksService {
@@ -17,6 +18,9 @@ export class TasksService {
 
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+
+        @InjectRepository(Estado)
+        private readonly estadoRepository: Repository<Estado>
     ){}
 
     async getTasks(user: UserActiveInterface){
@@ -44,14 +48,25 @@ export class TasksService {
             throw new BadRequestException('User not found');
         }
     
+        // Validar que estadoId esté presente, si no, asignar 1
+        const estadoId = createTaskDto.estadoId ?? 1;
+        const estadoDb = await this.estadoRepository.findOneBy({ id: estadoId });
+    
+        if (!estadoDb) {
+            throw new BadRequestException('Estado not found');
+        }
+    
+        
         const nuevaTarea = this.taskRepository.create({
             ...createTaskDto,
-            user: userDb, 
-            userEmail: user.email, 
+            user: userDb,
+            userEmail: user.email,
+            estado: estadoDb, 
         });
     
         return this.taskRepository.save(nuevaTarea);
     }
+    
     
     
 

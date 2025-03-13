@@ -24,7 +24,11 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, documentFactory);
 
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:4200', // Permite solicitudes desde el frontend
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Permitir cookies y autenticación con credenciales
+  });
   
   await app.listen(process.env.PORT ?? 3000);
 }
